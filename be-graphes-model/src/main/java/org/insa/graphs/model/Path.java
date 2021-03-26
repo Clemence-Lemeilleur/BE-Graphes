@@ -202,8 +202,18 @@ public class Path {
      */
     public boolean isValid() {
         // TODO:
-        return false;
-    }
+    	if ((this.isEmpty()) || (this.size() == 1)){
+    		return true;
+    	}
+    	
+    	else if(this.getOrigin() == this.origin){
+    		null; 
+    	}
+    	
+    	else() {
+    		return false;
+    	}
+        
 
     /**
      * Compute the length of this path (in meters).
@@ -231,8 +241,8 @@ public class Path {
      */
     public double getTravelTime(double speed) {
         // TODO:
-    	double TravelTime=this.getLength()/speed;
-        return TravelTime;
+    	double TravelTime=this.getLength()/(speed/3600); // pour être en seconde
+        return (TravelTime); 
     }
 
     /**
@@ -241,11 +251,18 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
         // TODO:
-        return 0;
+    	float length=0;
+    	double tempsmin=0;
+    	for(Arc arc :  this.arcs) {
+    		length = arc.getLength();
+    		double maxAutorise = arc.getRoadInformation().getMaximumSpeed();
+    		double temps = this.getTravelTime(maxAutorise);
+    		tempsmin=+ temps;
+    	}
+        return tempsmin;
     }
 
 }
