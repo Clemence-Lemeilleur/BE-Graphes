@@ -198,20 +198,28 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
         // TODO:
-    	if ((this.isEmpty()) || (this.size() == 1)){
+    	// Cas 1: CHEMIN VIDE
+    	if (this.isEmpty()) {
     		return true;
     	}
-    	
-    	else if(this.getOrigin() == this.origin){
-    		null; 
+    	// CAS 2: UN SEUL NOEUD DANS LE CHEMIN
+    	else if (this.size() == 1) {
+    		return true;
     	}
-    	
-    	else() {
-    		return false;
+    	// CAS 3: LE CHEMIN A 2 NOEUDS OU PLUS
+    	else {
+    		Node origine = this.getOrigin();
+    		for (Arc arc : this.arcs) {
+    			if (!origine.equals(arc.getOrigin())) {
+    				return false;
+    			}
+    			origine = arc.getDestination();
+    		} 			
+    	}
+        return true;
     	}
         
 
