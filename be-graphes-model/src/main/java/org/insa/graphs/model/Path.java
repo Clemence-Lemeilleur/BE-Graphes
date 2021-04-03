@@ -2,6 +2,7 @@ package org.insa.graphs.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,13 +31,40 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
      */
-    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
+	public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+    	Path result;  
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        if (nodes.isEmpty()) {
+        	result = new Path(graph);
+        }
+        else if(nodes.size()==1) {
+        	result= new Path(graph, nodes.get(0));
+        }
+        else {
+        	int i=0;
+        	
+        	for (Node list : nodes) {
+        		Arc nouveau= null;
+        		double minimum = Float.MAX_VALUE;
+        		if (list==nodes.get(nodes.size()-1)) break;
+        		for (Arc succ : list.getSuccessors()) {
+        			if (succ.getDestination()==nodes.get(i+1)) {
+        				if (succ.getMinimumTravelTime()<= minimum) {
+        					nouveau= succ;
+        					minimum = succ.getMinimumTravelTime();
+  
+        				}
+        			}
+        		}
+        		i++;
+        		if (nouveau == null) throw new IllegalArgumentException("Aucun successeur valide !");
+        		arcs.add(nouveau);
+        }
+        result = new Path(graph, arcs);
+        } 	
+        return result;
     }
 
     /**
@@ -51,14 +79,42 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
      */
-    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
+	public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+    	Path result;  
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        if (nodes.isEmpty()) {
+        	result = new Path(graph);
+        }
+        else if(nodes.size()==1) {
+        	result= new Path(graph, nodes.get(0));
+        }
+        else {
+        	int i=0;
+        	
+        	for (Node list : nodes) {
+        		Arc nouveau= null;
+        		double minimum = Float.MAX_VALUE;
+        		if (list==nodes.get(nodes.size()-1)) break;
+        		for (Arc succ : list.getSuccessors()) {
+        			if (succ.getDestination()==nodes.get(i+1)) {
+        				if (succ.getLength()<= minimum) {
+        					nouveau= succ;
+        					minimum = succ.getLength();
+  
+        				}
+        			}
+        		}
+        		i++;
+        		if (nouveau == null) throw new IllegalArgumentException("Aucun successeur valide !");
+        		arcs.add(nouveau);
+        }
+        result = new Path(graph, arcs);
+        } 	
+        return result;
     }
+
 
     /**
      * Concatenate the given paths.
@@ -213,7 +269,7 @@ public class Path {
     	else {
     		Node origine = this.getOrigin();
     		for (Arc arc : this.arcs) {
-    			if (!origine.equals(arc.getOrigin())) {
+    			if (origine.compareTo(arc.getOrigin()) != 0) {
     				return false;
     			}
     			origine = arc.getDestination();
@@ -249,7 +305,7 @@ public class Path {
      */
     public double getTravelTime(double speed) {
         // TODO:
-    	double TravelTime=this.getLength()/(speed/3600); // pour être en seconde
+    	double TravelTime=this.getLength()/(speed/3.6); // pour être en seconde
         return (TravelTime); 
     }
 
@@ -262,15 +318,17 @@ public class Path {
      */
     public double getMinimumTravelTime() {
         // TODO:
-    	float length=0;
-    	double tempsmin=0;
+    	double speed = 0;
+    	RoadInformation RoadInfo;
+    	double time = 0;
+    	double time_res = 0;
     	for(Arc arc :  this.arcs) {
-    		length = arc.getLength();
-    		double maxAutorise = arc.getRoadInformation().getMaximumSpeed();
-    		double temps = this.getTravelTime(maxAutorise);
-    		tempsmin=+ temps;
+    		RoadInfo = arc.getRoadInformation();
+    		speed = RoadInfo.getMaximumSpeed()/3.6;
+    		time_res = arc.getLength()/speed;
+    		time = time + time_res;
     	}
-        return tempsmin;
+        return time;
     }
 
 }
