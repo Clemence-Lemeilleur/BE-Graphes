@@ -18,7 +18,7 @@ public class Label implements Comparable<Label> {
 		this.Sommet_Courant = noeud;
 		this.Marked = false;
 		this.Cost = Float.POSITIVE_INFINITY;
-		this.Father = null; 
+		//this.Father = null; 
 		this.Tas = false;
 		this.FatherArc = null;
 	}
@@ -58,8 +58,8 @@ public class Label implements Comparable<Label> {
 		this.Cost = cout;
 	}
 	
-	public void setFather(Node father) {
-		this.Father = father;
+	public void setFather(Arc fatherarc) {
+		this.FatherArc = fatherarc;
 	}
 	
 	public void setInTas() {
