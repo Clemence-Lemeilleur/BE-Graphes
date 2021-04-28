@@ -41,8 +41,8 @@ public class Label implements Comparable<Label> {
 		return this.Marked;
 	}
 	
-	public Node getFather() {
-		return this.Father;
+	public Arc getFather() {
+		return this.FatherArc;
 	}
 	
 	/* Retourne true si le noeud a été mis dans le tas */
