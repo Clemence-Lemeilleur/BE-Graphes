@@ -46,6 +46,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     		x=heap.findMin();
     		heap.remove(x);
     		x.setMark();
+    	
     		/* On indique aux observateurs que le Node a été marqué */
     		notifyNodeMarked(x.getSommet());
     		/* On vérifie si on doit s'arrêter, arriver à la destination */
@@ -61,6 +62,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						Label y=labels.get(succ.getDestination().getId());
 						/* Si le successeur n'est pas encore marqué */
 						if (y.getMark()==false){
+							
+							/* On indique aux observateurs que le Node a été marqué */
+				    		notifyNodeReached(y.getSommet());
+				    		
 							/* Si on obtient un meilleur coût */
 							/* Alors on le met à jour */
 							if(y.getCost()>x.getCost() + succ.getLength()) {
