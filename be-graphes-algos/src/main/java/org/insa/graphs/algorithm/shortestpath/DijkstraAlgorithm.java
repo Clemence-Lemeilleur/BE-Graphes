@@ -52,28 +52,34 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     		if(x.getSommet() == data.getDestination()) { 
     			break;
     		}
-    		/* Parcours des successeurs du sommet courant */
-    		for (Arc succ : x.getSommet().getSuccessors()) {
-    	    /* On recupere le label correspondant au noeud dans le tableau de labels */
-    		Label y=labels.get(succ.getDestination().getId());
-    		/* Si le successeur n'est pas encore marqué */
-    			if (y.getMark()==false){
-    				/* Si on obtient un meilleur coût */
-					/* Alors on le met à jour */
-    				if(y.getCost()>x.getCost() + succ.getLength()) {
-    					if(y.getFather()!=null) {
-    						heap.remove(y);
-    					}
-	    				y.setCost(x.getCost()+succ.getLength());
-	    				heap.insert(y);
-	    				y.setFather(succ);
-    				}
-    			}
+    		
+			/* Parcours des successeurs du sommet courant */
+				for (Arc succ : x.getSommet().getSuccessors()) {
+					// On vérifie que l'on peut réellement prendre cet arc
+					if (data.isAllowed(succ)) {
+						/* On recupere le label correspondant au noeud dans le tableau de labels */
+						Label y=labels.get(succ.getDestination().getId());
+						/* Si le successeur n'est pas encore marqué */
+						if (y.getMark()==false){
+							/* Si on obtient un meilleur coût */
+							/* Alors on le met à jour */
+							if(y.getCost()>x.getCost() + succ.getLength()) {
+								if(y.getFather()!=null) {
+									heap.remove(y);
+								}
+								y.setCost(x.getCost()+succ.getLength());
+								heap.insert(y);
+								y.setFather(succ);
+							}
+						}
    
-    		}
+					}
+				}
     	}
-    	if (labels.get(data.getDestination().getId()) == null) {
-            solution = new ShortestPathSolution(data, Status.INFEASIBLE);
+    	if (labels.get(data.getDestination().getId()).getFather() == null) {
+    		// La destination n'a pas de prédecesseur, la solution n'est pas faisable
+            solution = new ShortestPathSolution(data, Status.INFEASIBLE);      
+            
         } else {
         	notifyDestinationReached(data.getDestination());
         	
