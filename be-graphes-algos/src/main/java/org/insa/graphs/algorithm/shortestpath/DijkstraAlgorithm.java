@@ -39,10 +39,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		notifyOriginProcessed(data.getOrigin());
 		
      // TODO:
-		// On recupère ce qu'on veut avec getDestination
-		
-		int nb_succ = 0;
-		int nb_visites = 0;
               
 		/* Itérations: Tant qu'il existe des sommets non marqués */
         Label x; 
@@ -53,7 +49,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	
     		/* On indique aux observateurs que le Node a été marqué */
     		notifyNodeMarked(x.getSommet());
-    		System.out.println(x.getCost() + "\n");
     		/* On vérifie si on doit s'arrêter, arriver à la destination */
     		if(x.getSommet() == data.getDestination()) { 
     			break;
@@ -61,16 +56,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     		
 			/* Parcours des successeurs du sommet courant */
 				for (Arc succ : x.getSommet().getSuccessors()) {
-					nb_succ++; 
 					// On vérifie que l'on peut réellement prendre cet arc
 					if (data.isAllowed(succ)) {
 						/* On recupere le label correspondant au noeud dans le tableau de labels */
 						Label y=labels.get(succ.getDestination().getId());
-						/* On indique aux observateurs que le Node a été marqué */
-			    		notifyNodeReached(y.getSommet());
-			    		nb_visites++;
 						/* Si le successeur n'est pas encore marqué */
 						if (y.getMark()==false){
+							
+							/* On indique aux observateurs que le Node a été marqué */
+				    		notifyNodeReached(y.getSommet());
+				    		
 							/* Si on obtient un meilleur coût */
 							/* Alors on le met à jour */
 							if(y.getCost()>x.getCost() + succ.getLength()) {
@@ -84,15 +79,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						}
    
 					}
-				
 				}
-				System.out.print("Nombre de successeurs du sommet: " + nb_succ + "\n");
-				System.out.print("Nombre de successeurs visités: " + nb_visites + "\n");
-				nb_succ = 0;
-				nb_visites = 0;
     	}
-    	
-    	//On crée la solution de fin 
     	if (labels.get(data.getDestination().getId()).getFather() == null) {
     		// La destination n'a pas de prédecesseur, la solution n'est pas faisable
             solution = new ShortestPathSolution(data, Status.INFEASIBLE);      
@@ -117,5 +105,4 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
     	return solution;
     }
-    
 }
