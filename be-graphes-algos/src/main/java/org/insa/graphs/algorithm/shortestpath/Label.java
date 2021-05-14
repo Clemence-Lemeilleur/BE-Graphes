@@ -12,6 +12,8 @@ public class Label implements Comparable<Label> {
 	public boolean Tas; //vrai si notre noeud est dans le tas
 	public Arc FatherArc;
 	
+	public float TotalCost;
+	
 //----------------------------Constructeur:-------------------------------------
 	//Les noeuds des graphes sont numérotés de 0 à N-1
 	public Label(Node noeud){
@@ -35,6 +37,7 @@ public class Label implements Comparable<Label> {
 	public float getTotalCost() {
 		return this.Cost;
 	}
+	
 	
 	/* Retourne true si le noeud a été marqué */
 	public boolean getMark() {

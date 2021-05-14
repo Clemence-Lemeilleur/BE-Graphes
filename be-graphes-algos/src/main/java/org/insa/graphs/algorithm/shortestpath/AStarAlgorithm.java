@@ -1,7 +1,10 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-import org.insa.graphs.algorithm.shortestpath.Label;
-import org.insa.graphs.algorithm.shortestpath.LabelStar;
+import java.util.ArrayList; 
+//import org.insa.graphs.algorithm.shortestpath.Label;
+//import org.insa.graphs.algorithm.shortestpath.LabelStar;
+import org.insa.graphs.algorithm.utils.BinaryHeap;
+import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
@@ -10,11 +13,16 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		super(data);
 	}
 	
-	@Override
-	/* Réécriture de la méthode newLabel */
-	/* afin d'utiliser LabelStar au lieu de Label dans l'algo */
-	protected Label newLabel(Node node, ShortestPathData data) {
-		return new LabelStar(node, data);
+	final public void Initialisation(Graph graph, ArrayList<Label> labels, BinaryHeap<Label> heap, ShortestPathData data) {
+		
+		for (Node node: graph.getNodes()) {
+			LabelStar a = new LabelStar(node, data);
+			a.setCost((float) a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
+			labels.add(a);
+		}
+		LabelStar labelOrigin = (LabelStar) labels.get(data.getOrigin().getId()); //ON aura alors l'origine de l'arc
+		labelOrigin.setCost(0);
+		heap.insert(labelOrigin);
 	}
 
 }
