@@ -54,7 +54,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	
     		/* On indique aux observateurs que le Node a été marqué */
     		notifyNodeMarked(x.getSommet());
-    		System.out.println("Le coût est de" + x.getCost() + "\n");
+    		System.out.println("Le coût est de " + x.getCost() + "\n");
     		/* On vérifie si on doit s'arrêter, arriver à la destination */
     		if(x.getSommet() == data.getDestination()) { 
     			break;
@@ -91,6 +91,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				
 				System.out.print("Nombre de successeurs du sommet: " + nb_succ + "\n");
 				System.out.print("Nombre de successeurs visités: " + nb_visites + "\n");
+				System.out.print("Le tas est toujours valide? :  " + heap.isValid() + "\n");
 				nb_succ = 0;
 				nb_visites = 0;
     	}

@@ -7,7 +7,7 @@ public class Label implements Comparable<Label> {
 	//On va faire un arbre de label afin de trouver directement le plus petit qui sera la racine
 	public boolean Marked;
 	public float Cost;
-	public Node Father; //on préfèrera prendre l'arc pour retrouver le chemin à la fin : on ne servira pas de ça au final 
+	public Label Father; //on préfèrera prendre l'arc pour retrouver le chemin à la fin : on ne servira pas de ça au final 
 	public Node Sommet_Courant; 
 	public boolean Tas; //vrai si notre noeud est dans le tas
 	public Arc FatherArc;
@@ -20,7 +20,7 @@ public class Label implements Comparable<Label> {
 		this.Sommet_Courant = noeud;
 		this.Marked = false;
 		this.Cost = Float.POSITIVE_INFINITY;
-		//this.Father = null; 
+		this.Father = null; 
 		this.Tas = false;
 		this.FatherArc = null;
 	}
@@ -46,6 +46,10 @@ public class Label implements Comparable<Label> {
 	
 	public Arc getFather() {
 		return this.FatherArc;
+	}
+	
+	public Label getFatherLabel() {
+		return this.Father;
 	}
 	
 	/* Retourne true si le noeud a été mis dans le tas */

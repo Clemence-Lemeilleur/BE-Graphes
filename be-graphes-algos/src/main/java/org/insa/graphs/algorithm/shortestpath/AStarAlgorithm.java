@@ -20,7 +20,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 			a.setCost((float) a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
 			labels.add(a);
 		}
-		LabelStar labelOrigin = (LabelStar) labels.get(data.getOrigin().getId()); //ON aura alors l'origine de l'arc
+		LabelStar labelOrigin = (LabelStar) labels.get(data.getOrigin().getId()); //On aura alors l'origine de l'arc
 		labelOrigin.setCost(0);
 		heap.insert(labelOrigin);
 	}

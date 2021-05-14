@@ -2,6 +2,10 @@ package org.insa.graphs.algorithm.utils;
 
 import java.util.ArrayList;
 
+//import org.insa.graphs.algorithm.shortestpath.Label;
+//import org.insa.graphs.model.Arc;
+//import org.insa.graphs.model.Node;
+
 /**
  * Implements a binary heap containing elements of type E.
  *
@@ -122,6 +126,28 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     public boolean isEmpty() {
         return this.currentSize == 0;
     }
+    
+    public boolean isValid() {
+        // TODO:
+    	// Cas 1: CHEMIN VIDE
+    	if (this.isEmpty()) {
+    		return true;
+    	}
+    	// CAS 2: UN SEUL NOEUD DANS LE CHEMIN
+    	else if (this.size() == 1) {
+    		return true;
+    	}
+    	// CAS 3: LE CHEMIN A 2 NOEUDS OU PLUS
+    	else {
+    		for (int i=1; i<this.currentSize; i++) {
+    			E x = this.array.get(i);
+    			if (x.compareTo(this.array.get(indexParent(i)))<0) {
+    				return false;
+    			}
+    		} 			
+    	}
+        return true;
+    	}
 
     @Override
     public int size() {
