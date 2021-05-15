@@ -17,7 +17,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		
 		for (Node node: graph.getNodes()) {
 			LabelStar a = new LabelStar(node, data);
-			a.setCost((float) a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
+			a.setEstimation((float)a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
 			labels.add(a);
 		}
 		LabelStar labelOrigin = (LabelStar) labels.get(data.getOrigin().getId()); //On aura alors l'origine de l'arc

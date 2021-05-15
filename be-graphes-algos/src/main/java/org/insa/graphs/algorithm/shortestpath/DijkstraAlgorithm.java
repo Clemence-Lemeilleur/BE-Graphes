@@ -6,23 +6,13 @@ import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.*;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
-
+	
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
 
-    @Override
-    protected ShortestPathSolution doRun() {
-        final ShortestPathData data = getInputData();
-        //boolean dest = false; // pour savoir si on est arrivé à destination ou pas
-        //int Taille = graph.size(); //pour avoir la taille du graphe de data
-        Graph graph = data.getGraph(); // on récupère le graph de data
-        ShortestPathSolution solution = null;
-        /* On crée un tableau de Label, avec leur ID : l'indice est le sommet, et la case contient son Label */
-        ArrayList<Label> labels = new ArrayList<Label>();
-        /* On crée un tas de Label */
-        BinaryHeap<Label> heap = new BinaryHeap<Label>();
-        
+ public void Initialisation(Graph graph, ArrayList<Label> labels, BinaryHeap<Label> heap, ShortestPathData data ) {
+		
         /* Initialisation */
 		//On met tout les points à l'infini pour initialiser avec le constructeur
         for(Node node : graph.getNodes()) {
@@ -32,13 +22,27 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Label Origin = labels.get(data.getOrigin().getId()); //origine de l'arc
         Origin.setCost(0);
         heap.insert(Origin);
-		//labels[Origin.getSommet().getId()] = Origin;
-		//Origin.setInTas();
-        
         /* Notifie les observateurs du premier évènement (départ de l'origine) */
 		notifyOriginProcessed(data.getOrigin());
+	}
+
+    @Override
+    protected ShortestPathSolution doRun() {
 		
      // TODO:
+    	
+    	final ShortestPathData data = getInputData();
+        //boolean dest = false; // pour savoir si on est arrivé à destination ou pas
+        //int Taille = graph.size(); //pour avoir la taille du graphe de data
+        Graph graph = data.getGraph(); // on récupère le graph de data
+        ShortestPathSolution solution = null;
+        /* On crée un tableau de Label, avec leur ID : l'indice est le sommet, et la case contient son Label */
+        ArrayList<Label> labels = new ArrayList<Label>();
+        /* On crée un tas de Label */
+        BinaryHeap<Label> heap = new BinaryHeap<Label>();
+        
+      //On appelle l'initialisation comme ça on peu ten redéfinir une autre pour le A* qui viendra l'override
+    	Initialisation(graph, labels, heap, data);
 		
 		// On recupère ce qu'on veut avec getDestination
 		
