@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
+import org.insa.graphs.algorithm.AbstractInputData;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
@@ -17,8 +18,15 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		
 		for (Node node: graph.getNodes()) {
 			LabelStar a = new LabelStar(node, data);
-			a.setEstimation((float)a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
-			labels.add(a);
+			//On fait un if pour avoir le calcul en distance et le calcul en temps de trajet
+			if (data.getMode() == AbstractInputData.Mode.LENGTH) {
+				a.setEstimation((float)a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
+				labels.add(a);
+			}
+			else {
+				a.setEstimation((float)a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()) / data.getGraph().getGraphInformation().getMaximumSpeed());
+				labels.add(a);
+			}
 		}
 		LabelStar labelOrigin = (LabelStar) labels.get(data.getOrigin().getId()); //On aura alors l'origine de l'arc
 		labelOrigin.setCost(0);
