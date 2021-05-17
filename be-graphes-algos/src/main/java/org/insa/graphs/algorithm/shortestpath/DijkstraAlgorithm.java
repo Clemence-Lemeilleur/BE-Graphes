@@ -4,6 +4,7 @@ import java.util.*; //tous importer d'un coup
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.*;
+import org.insa.graphs.algorithm.AbstractInputData;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	
@@ -58,7 +59,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	
     		/* On indique aux observateurs que le Node a été marqué */
     		notifyNodeMarked(x.getSommet());
-    		System.out.println("Le coût est de " + x.getCost() + "\n");
+    		//System.out.println("Le coût est de " + x.getCost() + "\n");
     		/* On vérifie si on doit s'arrêter, arriver à la destination */
     		if(x.getSommet() == data.getDestination()) { 
     			break;
@@ -83,6 +84,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 								if(y.getFather()!=null) {
 									heap.remove(y);
 								}
+								//si on est en mode longueur
+								if (data.getMode() == AbstractInputData.Mode.LENGTH) {
+			                        
+			                        y.setCost(x.getCost() + succ.getLength());
+			                    }
+								//si on est en mode temps, durée
+			                    else {
+			                    	y.setCost((float)x.getCost() + (float)succ.getMinimumTravelTime());
+			                    }
 								y.setCost(x.getCost()+succ.getLength());
 								heap.insert(y);
 								y.setFather(succ);
@@ -93,9 +103,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			
 				}
 				
-				System.out.print("Nombre de successeurs du sommet: " + nb_succ + "\n");
-				System.out.print("Nombre de successeurs visités: " + nb_visites + "\n");
-				System.out.print("Le tas est toujours valide? :  " + heap.isValid() + "\n");
+				//J'ai enlevé les print car l'algo prenait beaucoup de temps à avancer sinon
+				
+				//System.out.print("Nombre de successeurs du sommet: " + nb_succ + "\n");
+				//System.out.print("Nombre de successeurs visités: " + nb_visites + "\n");
+				//System.out.print("Le tas est toujours valide? :  " + heap.isValid() + "\n");
 				nb_succ = 0;
 				nb_visites = 0;
     	}
