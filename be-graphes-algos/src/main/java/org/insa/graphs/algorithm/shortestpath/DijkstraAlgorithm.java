@@ -78,25 +78,28 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						/* Si le successeur n'est pas encore marqué */
 						if (y.getMark()==false){
 							
+							if(y.getFather()!=null) {
+								heap.remove(y);
+							}
+							
 							/* Si on obtient un meilleur coût */
 							/* Alors on le met à jour */
-							if(y.getCost()>x.getCost() + succ.getLength()) {
-								if(y.getFather()!=null) {
-									heap.remove(y);
+							
+							//si on est en mode longueur
+							if (data.getMode() == AbstractInputData.Mode.LENGTH) {
+								if(y.getCost()>x.getCost() + succ.getLength()) {
+									y.setCost(x.getCost() + succ.getLength());
 								}
-								//si on est en mode longueur
-								if (data.getMode() == AbstractInputData.Mode.LENGTH) {
-			                        
-			                        y.setCost(x.getCost() + succ.getLength());
-			                    }
+							}
+							//si on est en mode temps, durée
+		                    else {
+		                    	if(y.getCost()>x.getCost() + succ.getMinimumTravelTime()) {
 								//si on est en mode temps, durée
-			                    else {
 			                    	y.setCost((float)x.getCost() + (float)succ.getMinimumTravelTime());
 			                    }
-								y.setCost(x.getCost()+succ.getLength());
+		                    }
 								heap.insert(y);
 								y.setFather(succ);
-							}
 						}
    
 					}

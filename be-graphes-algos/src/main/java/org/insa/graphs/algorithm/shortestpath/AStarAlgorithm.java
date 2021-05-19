@@ -1,5 +1,6 @@
 package org.insa.graphs.algorithm.shortestpath;
 
+import java.awt.Point;
 import java.util.ArrayList; 
 //import org.insa.graphs.algorithm.shortestpath.Label;
 //import org.insa.graphs.algorithm.shortestpath.LabelStar;

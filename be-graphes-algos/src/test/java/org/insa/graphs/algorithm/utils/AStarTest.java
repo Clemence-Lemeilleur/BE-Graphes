@@ -90,13 +90,13 @@ public class AStarTest {
         // INSA -> CNES - Pied
         toulouseD2 = new ShortestPathData(graph_toulouse, graph_toulouse.getNodes().get(11574), graph_toulouse.getNodes().get(11081), ArcInspectorFactory.getAllFilters().get(0));
     
-        // Get path with dijkstra
+        // Get path with A*
         shortPath = new AStarAlgorithm(shortData).run().getPath();
         invalidPath = new AStarAlgorithm(invalidData).run().getPath();
         toulouseP1 = new AStarAlgorithm(toulouseD1).run().getPath();
         toulouseP2 = new AStarAlgorithm(toulouseD2).run().getPath();
         
-        // Get path with dijkstra
+        // Get path with BellmanFord
         shortSol = new BellmanFordAlgorithm(shortData).run().getPath();
         toulouseS1 = new BellmanFordAlgorithm(toulouseD1).run().getPath();
         toulouseS2 = new BellmanFordAlgorithm(toulouseD2).run().getPath();
@@ -104,6 +104,7 @@ public class AStarTest {
 
     @Test
     public void testIsEmpty() {
+    	//On vérifie si l'assertion renvoie faux, c'est que c'est bon 
         assertFalse(shortPath.isEmpty());
         assertFalse(toulouseP1.isEmpty());
         assertFalse(toulouseP2.isEmpty());
@@ -111,6 +112,7 @@ public class AStarTest {
 
     @Test
     public void testSize() {
+    	//On vérifie si l'assertion renvoie égal, c'est que c'est bon 
         assertEquals(shortSol.size(), shortPath.size());
         assertEquals(toulouseS1.size(), toulouseP1.size());
         assertEquals(toulouseS2.size(), toulouseP2.size());
@@ -118,9 +120,11 @@ public class AStarTest {
 
     @Test
     public void testIsValid() {
+    	//On vérifie si l'assertion renvoie vrai, c'est que c'est bon 
         assertTrue(shortPath.isValid());
         assertTrue(toulouseP1.isValid());
         assertTrue(toulouseP2.isValid());
+      //On vérifie si l'assertion renvoie null, c'est que c'est bon 
         assertNull(invalidPath);
     }
 
