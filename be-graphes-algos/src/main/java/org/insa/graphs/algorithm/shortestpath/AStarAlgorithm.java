@@ -1,6 +1,7 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-import java.awt.Point;
+//import java.awt.Point;
+import org.insa.graphs.model.Point;
 import java.util.ArrayList; 
 //import org.insa.graphs.algorithm.shortestpath.Label;
 //import org.insa.graphs.algorithm.shortestpath.LabelStar;
@@ -20,12 +21,19 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		for (Node node: graph.getNodes()) {
 			LabelStar a = new LabelStar(node, data);
 			//On fait un if pour avoir le calcul en distance et le calcul en temps de trajet
+			
+			Node sommet_a = a.getSommet();
+			Point point_a = sommet_a.getPoint();
+			Node dest = data.getDestination();
+			Point dest_point =dest .getPoint();
+			Float dist = (float)point_a.distanceTo(dest_point);
+
 			if (data.getMode() == AbstractInputData.Mode.LENGTH) {
-				a.setEstimation((float)a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()));
+				a.setEstimation(dist);
 				labels.add(a);
 			}
 			else {
-				a.setEstimation((float)a.getSommet().getPoint().distanceTo(data.getDestination().getPoint()) / data.getGraph().getGraphInformation().getMaximumSpeed());
+				a.setEstimation(dist / data.getGraph().getGraphInformation().getMaximumSpeed());
 				labels.add(a);
 			}
 		}
