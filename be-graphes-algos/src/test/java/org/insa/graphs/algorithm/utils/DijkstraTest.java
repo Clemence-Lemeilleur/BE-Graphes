@@ -10,13 +10,17 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
+import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathData;
+import org.insa.graphs.algorithm.shortestpath.ShortestPathSolution;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
+import org.insa.graphs.model.Point;
 import org.insa.graphs.model.RoadInformation;
 import org.insa.graphs.model.RoadInformation.RoadType;
 import org.insa.graphs.model.io.BinaryGraphReader;
@@ -24,6 +28,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;
+import org.insa.graphs.algorithm.shortestpath.ShortestPathAlgorithm;
+import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.BellmanFordAlgorithm;
 
 public class DijkstraTest {
@@ -45,9 +51,11 @@ public class DijkstraTest {
     								toulouseD1, toulouseD2;
     
     // Result of the algorithm
-    private static Path invalidPath, 
-    					shortPath, toulouseP1, toulouseP2,
+    private static Path shortPath, toulouseP1, toulouseP2,
     					shortSol, toulouseS1, toulouseS2;
+    
+   //Invalid Solution
+    private static ShortestPathSolution invalidSolution;
 
     @BeforeClass
     public static void initAll() throws IOException {
@@ -59,7 +67,7 @@ public class DijkstraTest {
         // Create nodes for small graphs
         nodes = new Node[6];
         for (int i = 0; i < nodes.length; ++i) {
-            nodes[i] = new Node(i, null);
+            nodes[i] = new Node(i, new Point(ThreadLocalRandom.current().nextFloat()*10,ThreadLocalRandom.current().nextFloat()*10));
         }
 
         // Add arcs...
@@ -90,15 +98,17 @@ public class DijkstraTest {
         toulouseD2 = new ShortestPathData(graph_toulouse, graph_toulouse.getNodes().get(8206), graph_toulouse.getNodes().get(7463), ArcInspectorFactory.getAllFilters().get(0));
     
         // Get path with dijkstra
-        shortPath = new DijkstraAlgorithm(shortData).run().getPath();
-        invalidPath = new DijkstraAlgorithm(invalidData).run().getPath();
-        toulouseP1 = new DijkstraAlgorithm(toulouseD1).run().getPath();
-        toulouseP2 = new DijkstraAlgorithm(toulouseD2).run().getPath();
+        shortPath =  Algo(shortData).run().getPath();
+        toulouseP1 = Algo(toulouseD1).run().getPath();
+        toulouseP2 = Algo(toulouseD2).run().getPath();
         
-        // Get path with dijkstra
+        // Get path with BF
         shortSol = new BellmanFordAlgorithm(shortData).run().getPath();
         toulouseS1 = new BellmanFordAlgorithm(toulouseD1).run().getPath();
         toulouseS2 = new BellmanFordAlgorithm(toulouseD2).run().getPath();
+        
+        //Solution invalide (graphe pas connexe)
+        invalidSolution = Algo(invalidData).run();
     }
 
     @Test
@@ -120,7 +130,7 @@ public class DijkstraTest {
         assertTrue(shortPath.isValid());
         assertTrue(toulouseP1.isValid());
         assertTrue(toulouseP2.isValid());
-        assertNull(invalidPath);
+        assertNull(invalidSolution.getPath());
     }
 
     @Test
@@ -128,6 +138,11 @@ public class DijkstraTest {
         assertEquals(shortSol.getLength(), shortPath.getLength(), 1e-6);
         assertEquals(toulouseS1.getLength(), toulouseP1.getLength(), 1e-6);
         assertEquals(toulouseS2.getLength(), toulouseS2.getLength(), 1e-6);
+    }
+    
+    @Test
+    public void testExist() {
+        assertEquals(invalidSolution.getStatus(), Status.INFEASIBLE);
     }
 
     @Test
@@ -143,11 +158,8 @@ public class DijkstraTest {
         assertEquals(toulouseS2.getTravelTime(28.8), toulouseP2.getTravelTime(28.8), 1e-6);
     }
 
-    @Test
-    public void testGetMinimumTravelTime() {
-        assertEquals(shortSol.getMinimumTravelTime(), shortPath.getMinimumTravelTime(), 1e-4);
-        assertEquals(toulouseS1.getMinimumTravelTime(), toulouseP1.getMinimumTravelTime(), 1e-4);
-        assertEquals(toulouseS2.getMinimumTravelTime(), toulouseP2.getMinimumTravelTime(), 1e-4);
+    protected static ShortestPathAlgorithm Algo(ShortestPathData data) {
+    	return new DijkstraAlgorithm(data);
     }
-//Une autre méthode aurait été de générer plusieurs tests aléatoires, sans en tracer un pour vérifier que tout marche bien.
+//Une autre méthode aurait été de générer plusieurs tests aléatoires, sans tracer un chemin nous même pour vérifier que tout marche bien: on crée aléatoirement un noeud de départ et de destination entre la taille des coordonées possible et on vérifie que le chemin est valide...
 }
