@@ -6,8 +6,8 @@ import org.insa.graphs.model.Node;
 //import org.insa.graphs.algorithm.AbstractInputData;
 
 public class LabelStar extends Label{
-	private float cout_estime;
-	private float cout_total;
+	private double cout_estime;
+	private double cout_total;
 
 	public LabelStar(Node sommet, ShortestPathData data) {
 		super(sommet);
@@ -17,20 +17,20 @@ public class LabelStar extends Label{
 	}
 	
 	/* Renvoie le coût de l'origine jusqu'au noeud + coût à vol d'oiseau du noeud jusqu'à la destination: ESTIMATION */
-	public float GetHeuristicCost() {
+	public double GetHeuristicCost() {
 		this.cout_total = this.getCost() + this.cout_estime;
 		//System.out.println(" cout: " + this.getCost() + " cout estimé: " + this.getEstimation());
 		return this.cout_total;
 	}
 	
 	//Renvoie une estimation du cout depuis l'origine
-	public float getEstimation() {
+	public double getEstimation() {
 		return this.cout_estime;
 		
 	}
 	
 	//Calcule une estimation du cout depuis l'origine
-	public void setEstimation(float cout) {
+	public void setEstimation(double cout) {
 		this.cout_estime = cout;
 		
 	}

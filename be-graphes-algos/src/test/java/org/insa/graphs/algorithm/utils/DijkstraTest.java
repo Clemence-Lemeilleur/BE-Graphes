@@ -85,9 +85,9 @@ public class DijkstraTest {
         
         // ---- Construct Toulouse Data
         // Domicile -> INSA - Voiture
-        toulouseD1 = new ShortestPathData(graph_toulouse, graph_toulouse.getNodes().get(11827), graph_toulouse.getNodes().get(5901), ArcInspectorFactory.getAllFilters().get(0));
+        toulouseD1 = new ShortestPathData(graph_toulouse, graph_toulouse.getNodes().get(23035), graph_toulouse.getNodes().get(20004), ArcInspectorFactory.getAllFilters().get(0));
         // INSA -> CNES - Pied
-        toulouseD2 = new ShortestPathData(graph_toulouse, graph_toulouse.getNodes().get(11574), graph_toulouse.getNodes().get(11081), ArcInspectorFactory.getAllFilters().get(0));
+        toulouseD2 = new ShortestPathData(graph_toulouse, graph_toulouse.getNodes().get(8206), graph_toulouse.getNodes().get(7463), ArcInspectorFactory.getAllFilters().get(0));
     
         // Get path with dijkstra
         shortPath = new DijkstraAlgorithm(shortData).run().getPath();
@@ -133,12 +133,12 @@ public class DijkstraTest {
     @Test
     public void testGetTravelTime() {
         // Note: 18 km/h = 5m/s
-        assertEquals(shortPath.getTravelTime(18), shortPath.getTravelTime(18), 1e-6);
+        assertEquals(shortSol.getTravelTime(18), shortPath.getTravelTime(18), 1e-6);
         assertEquals(toulouseS1.getTravelTime(18), toulouseP1.getTravelTime(18), 1e-6);
         assertEquals(toulouseS2.getTravelTime(18), toulouseP2.getTravelTime(18), 1e-6);
 
         // Note: 28.8 km/h = 8m/s
-        assertEquals(shortPath.getTravelTime(28.8), shortPath.getTravelTime(28.8), 1e-6);
+        assertEquals(shortSol.getTravelTime(28.8), shortPath.getTravelTime(28.8), 1e-6);
         assertEquals(toulouseS1.getTravelTime(28.8), toulouseP1.getTravelTime(28.8), 1e-6);
         assertEquals(toulouseS2.getTravelTime(28.8), toulouseP2.getTravelTime(28.8), 1e-6);
     }
@@ -149,5 +149,5 @@ public class DijkstraTest {
         assertEquals(toulouseS1.getMinimumTravelTime(), toulouseP1.getMinimumTravelTime(), 1e-4);
         assertEquals(toulouseS2.getMinimumTravelTime(), toulouseP2.getMinimumTravelTime(), 1e-4);
     }
-
+//Une autre méthode aurait été de générer plusieurs tests aléatoires, sans en tracer un pour vérifier que tout marche bien.
 }

@@ -24,9 +24,10 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 			
 			Node sommet_a = a.getSommet();
 			Point point_a = sommet_a.getPoint();
+			//System.out.print("point_a: " + point_a + "\n");
 			Node dest = data.getDestination();
-			Point dest_point =dest .getPoint();
-			Float dist = (float)point_a.distanceTo(dest_point);
+			Point dest_point =dest.getPoint();
+			Double dist = point_a.distanceTo(dest_point);
 
 			if (data.getMode() == AbstractInputData.Mode.LENGTH) {
 				a.setEstimation(dist);

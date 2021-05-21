@@ -42,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         /* On crée un tas de Label */
         BinaryHeap<Label> heap = new BinaryHeap<Label>();
         
-      //On appelle l'initialisation comme ça on peu ten redéfinir une autre pour le A* qui viendra l'override
+      //On appelle l'initialisation comme ça on peut en redéfinir une autre pour le A* qui viendra l'override
     	Initialisation(graph, labels, heap, data);
 		
 		// On recupère ce qu'on veut avec getDestination
@@ -53,8 +53,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		/* Itérations: Tant qu'il existe des sommets non marqués */
         Label x; 
     	while(!heap.isEmpty()) {
-    		x=heap.findMin();
-    		heap.remove(x);
+    		x=heap.deleteMin();
     		x.setMark();
     	
     		/* On indique aux observateurs que le Node a été marqué */
@@ -78,28 +77,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						/* Si le successeur n'est pas encore marqué */
 						if (y.getMark()==false){
 							
-							if(y.getFather()!=null) {
-								heap.remove(y);
-							}
-							
 							/* Si on obtient un meilleur coût */
 							/* Alors on le met à jour */
-							
-							//si on est en mode longueur
-							if (data.getMode() == AbstractInputData.Mode.LENGTH) {
-								if(y.getCost()>x.getCost() + succ.getLength()) {
-									y.setCost(x.getCost() + succ.getLength());
+							//On ne distingue pas les modes longueur et temps puisqu'on utilise data.getCost qui le fait tout seul
+								if(y.getCost()>x.getCost() + data.getCost(succ)) {
+									if (y.getFather()!=null) {
+										heap.remove(y);
+									}
+									y.setCost(x.getCost() + data.getCost(succ));
+									y.setFather(succ);
+									heap.insert(y);
+									
 								}
-							}
-							//si on est en mode temps, durée
-		                    else {
-		                    	if(y.getCost()>x.getCost() + succ.getMinimumTravelTime()) {
-								//si on est en mode temps, durée
-			                    	y.setCost((float)x.getCost() + (float)succ.getMinimumTravelTime());
-			                    }
-		                    }
-								heap.insert(y);
-								y.setFather(succ);
 						}
    
 					}
@@ -133,9 +122,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
             // on doit inverser le chemin trouver puisque pour l'instant on a reformer le chemin depuis la destination 
             Collections.reverse(arcs);
-
+            
+            if (arcs.size() == 0) {
+            	solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getOrigin()));
+            }
+            else {
             // on met ca dans solution 
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+            }
         }
     	return solution;
     }

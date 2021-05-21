@@ -6,13 +6,13 @@ import org.insa.graphs.model.Arc;
 public class Label implements Comparable<Label> {
 	//On va faire un arbre de label afin de trouver directement le plus petit qui sera la racine
 	public boolean Marked;
-	public float Cost;
+	public double Cost;
 	public Label Father; //on préfèrera prendre l'arc pour retrouver le chemin à la fin : on ne servira pas de ça au final 
 	public Node Sommet_Courant; 
 	public boolean Tas; //vrai si notre noeud est dans le tas
 	public Arc FatherArc;
 	
-	public float TotalCost;
+	public double TotalCost;
 	
 //----------------------------Constructeur:-------------------------------------
 	//Les noeuds des graphes sont numérotés de 0 à N-1
@@ -30,11 +30,11 @@ public class Label implements Comparable<Label> {
 		return this.Sommet_Courant;
 	}
 	
-	public float getCost() {
+	public double getCost() {
 		return this.Cost;
 	}
 	
-	public float getTotalCost() {
+	public double getTotalCost() {
 		return this.Cost;
 	}
 	
@@ -61,7 +61,7 @@ public class Label implements Comparable<Label> {
 		this.Marked = true;
 	}
 	
-	public void setCost(float cout) {
+	public void setCost(double cout) {
 		this.Cost = cout;
 	}
 	

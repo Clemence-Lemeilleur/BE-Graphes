@@ -10,6 +10,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathData;
@@ -22,6 +23,7 @@ import org.insa.graphs.model.RoadInformation.RoadType;
 import org.insa.graphs.model.io.BinaryGraphReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.insa.graphs.model.Point;
 
 //import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;  plus besoin ici
 import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
@@ -36,6 +38,8 @@ public class AStarTest {
 
     // List of nodes
     private static Node[] nodes;
+    // List of nodes
+    private static Point[] points;
 
     // List of arcs in the graph, a2b is the arc from node A (0) to B (1).
     @SuppressWarnings("unused")
@@ -46,7 +50,7 @@ public class AStarTest {
     								toulouseD1, toulouseD2;
     
     // Result of the algorithm
-    private static Path invalidPath, 
+    private static Path invalidPath, //Non connexe, ne marchera pas, 2 nodes
     					shortPath, toulouseP1, toulouseP2,
     					shortSol, toulouseS1, toulouseS2;
 
@@ -57,12 +61,19 @@ public class AStarTest {
         RoadInformation speed10 = new RoadInformation(RoadType.MOTORWAY, null, true, 36, ""),
                 		speed20 = new RoadInformation(RoadType.MOTORWAY, null, true, 72, "");
 
+     // Create points for small graphs
+       // points = new Point[6];
+       // for (int i = 0; i < points.length; ++i) {
+         //   points[i] = new Point(1000+200*i, 1100+200*i);
+       // }
+        
         // Create nodes for small graphs
         nodes = new Node[6];
         for (int i = 0; i < nodes.length; ++i) {
-            nodes[i] = new Node(i, null);
+            nodes[i] = new Node(i, new Point(ThreadLocalRandom.current().nextFloat()*10,ThreadLocalRandom.current().nextFloat()*10));
         }
-
+        
+       
         // Add arcs...
         a2b = Node.linkNodes(nodes[0], nodes[1], 10, speed10, null);
         a2c = Node.linkNodes(nodes[0], nodes[2], 15, speed10, null);
@@ -108,6 +119,7 @@ public class AStarTest {
         assertFalse(shortPath.isEmpty());
         assertFalse(toulouseP1.isEmpty());
         assertFalse(toulouseP2.isEmpty());
+        //On ne teste pas pour un chemin qui n'existe pas puisque ce ne sera jamais le cas dans la vie réelle
     }
 
     @Test
@@ -129,6 +141,8 @@ public class AStarTest {
     }
 
     @Test
+    
+    //Faire attention de savoir si on est en temps ou en distance
     public void testGetLength() {
         assertEquals(shortSol.getLength(), shortPath.getLength(), 1e-6);
         assertEquals(toulouseS1.getLength(), toulouseP1.getLength(), 1e-6);
