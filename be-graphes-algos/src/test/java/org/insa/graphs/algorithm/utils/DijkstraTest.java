@@ -148,7 +148,7 @@ public class DijkstraTest {
     @Test
     public void testGetTravelTime() {
         // Note: 18 km/h = 5m/s
-        assertEquals(shortSol.getTravelTime(18), shortPath.getTravelTime(18), 1e-6);
+        assertEquals(shortSol.getTravelTime(18), shortPath.getTravelTime(18), 1e-6); // 1e-6 est la précision, l'erreur acceptable
         assertEquals(toulouseS1.getTravelTime(18), toulouseP1.getTravelTime(18), 1e-6);
         assertEquals(toulouseS2.getTravelTime(18), toulouseP2.getTravelTime(18), 1e-6);
 

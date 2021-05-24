@@ -20,7 +20,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		
 		for (Node node: graph.getNodes()) {
 			LabelStar a = new LabelStar(node, data);
-			//On fait un if pour avoir le calcul en distance et le calcul en temps de trajet
 			
 			Node sommet_a = a.getSommet();
 			Point point_a = sommet_a.getPoint();
@@ -28,12 +27,15 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 			Node dest = data.getDestination();
 			Point dest_point =dest.getPoint();
 			Double dist = point_a.distanceTo(dest_point);
+			
+			//On fait un if pour avoir le calcul en distance et le calcul en temps de trajet
 
 			if (data.getMode() == AbstractInputData.Mode.LENGTH) {
 				a.setEstimation(dist);
 				labels.add(a);
 			}
 			else {
+				//on utilise v=d/t
 				a.setEstimation(dist / data.getGraph().getGraphInformation().getMaximumSpeed());
 				labels.add(a);
 			}

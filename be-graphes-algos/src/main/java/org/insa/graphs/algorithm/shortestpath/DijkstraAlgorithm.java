@@ -71,7 +71,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					if (data.isAllowed(succ)) {
 						/* On recupere le label correspondant au noeud dans le tableau de labels */
 						Label y=labels.get(succ.getDestination().getId());
-						/* On indique aux observateurs que le Node a été marqué */
+						/* On indique aux observateurs que le Node a été visité */
 			    		notifyNodeReached(y.getSommet());
 			    		nb_visites++;
 						/* Si le successeur n'est pas encore marqué */
@@ -96,6 +96,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				}
 				
 				//J'ai enlevé les print car l'algo prenait beaucoup de temps à avancer sinon
+				//Cela permetait de voir combien de successeurs ont parcourait à partir d'un noeud
+				//Et de vérifier que le cout du chemin était bien croissant
 				
 				//System.out.print("Nombre de successeurs du sommet: " + nb_succ + "\n");
 				//System.out.print("Nombre de successeurs visités: " + nb_visites + "\n");
@@ -127,7 +129,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             	solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getOrigin()));
             }
             else {
-            // on met ca dans solution 
+            // on met ce chemin dans solution 
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
             }
         }
