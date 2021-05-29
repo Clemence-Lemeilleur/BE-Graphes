@@ -63,7 +63,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     		if(x.getSommet() == data.getDestination()) { 
     			break;
     		}
-    		
+    		//RAPPEL: Le tas contient l'ordre de visite des sommets, dès que j'ai marqué un sommet je le sort du tas. 
+    		//Je visité à chaque itération le plus petit de la pile et je le dépile.
 			/* Parcours des successeurs du sommet courant */
 				for (Arc succ : x.getSommet().getSuccessors()) {
 					nb_succ++; 
@@ -81,6 +82,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 							/* Alors on le met à jour */
 							//On ne distingue pas les modes longueur et temps puisqu'on utilise data.getCost qui le fait tout seul
 								if(y.getCost()>x.getCost() + data.getCost(succ)) {
+									//On vérifie que le sommet n'a pas déjà été visité sinon on l'enlève du tas et on le remet, comme pour faire un update du tas
 									if (y.getFather()!=null) {
 										heap.remove(y);
 									}

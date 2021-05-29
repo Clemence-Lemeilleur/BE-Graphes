@@ -16,6 +16,17 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		super(data);
 	}
 	
+	//DISTINCTION: Pile=Tas : premier entré dernier sorti, le tas se tris tout seul, par ordre croissant ou décroissant
+	//             File: premier entré, premier sorti
+	
+	//RAPPEL: 
+	//Le dijkstra a aucune idée de où est l'arrivée
+	//Donc il va chercher dans toutes les directions jusqu'à ce qu'il trouve la destination
+
+	//A* lui il a une vague idée parce qu'on lui dit à chaque fois qu'il visite un point si celui ci est éloigné ou pas de la destination
+	//Du coup les points visités qui l'éloigneront de la destination auront tendance à être tout en haut de la pile (donc peu ou pas visitié car ceux de distance min seront en bas)
+	//Il va donc plus vite à la destination
+	
 	final public void Initialisation(Graph graph, ArrayList<Label> labels, BinaryHeap<Label> heap, ShortestPathData data) {
 		
 		for (Node node: graph.getNodes()) {
